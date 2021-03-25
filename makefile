@@ -3,3 +3,6 @@ bld:
 
 clean:
 	rm -r build
+
+install:
+	go install ./src/main.go
