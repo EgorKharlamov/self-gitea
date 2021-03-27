@@ -8,10 +8,7 @@ import (
 	"strings"
 )
 
-// git@gitea.hecate.dev:egorkharlamov/test-go.git
-// ssh://git@gitea.hecate.dev:2221/egorkharlamov/test-go.git
-
-type argumentsType struct {
+type ArgumentsType struct {
 	command string
 	path    string
 	port    string
@@ -22,11 +19,11 @@ func main() {
 	arguments := flag.Args()
 	checkArgsCount(arguments)
 
-	updatedArgs := setFlag(arguments)
-	updatedPath := buildNewPath(updatedArgs.path, updatedArgs.port)
+	updatedArgs := SetFlag(arguments)
+	updatedPath := BuildNewPath(updatedArgs.path, updatedArgs.port)
 	updatedArgs.path = updatedPath
 
-	runCommand(updatedArgs)
+	RunCommand(updatedArgs)
 }
 
 func checkArgsCount(args []string) {
@@ -40,13 +37,13 @@ func checkArgsCount(args []string) {
 	}
 }
 
-func buildNewPath(path string, port string) string {
+func BuildNewPath(path string, port string) string {
 	slicedPath := strings.Split(path, ":")
 	res := fmt.Sprintf("ssh://%s:%s/%s", slicedPath[0], port, slicedPath[1])
 	return res
 }
 
-func runCommand(args argumentsType) {
+func RunCommand(args ArgumentsType) {
 	git := "git"
 	cmd := exec.Command(git, args.command, args.path)
 
@@ -56,15 +53,15 @@ func runCommand(args argumentsType) {
 	cmd.Run()
 }
 
-func (obj *argumentsType) defaultPort() {
+func (obj *ArgumentsType) defaultPort() {
 	if obj.port == "" {
 		obj.port = "2221"
 	}
 }
 
 //find flag
-func setFlag(str []string) argumentsType {
-	res := argumentsType{command: str[0], path: str[1]}
+func SetFlag(str []string) ArgumentsType {
+	res := ArgumentsType{command: str[0], path: str[1]}
 	if !port.set {
 		res.defaultPort()
 	} else {
@@ -74,22 +71,22 @@ func setFlag(str []string) argumentsType {
 }
 
 //  with flag magic
-type stringFlag struct {
+type StringFlag struct {
 	set   bool
 	value string
 }
 
-func (sf *stringFlag) Set(x string) error {
+func (sf *StringFlag) Set(x string) error {
 	sf.value = x
 	sf.set = true
 	return nil
 }
 
-func (sf *stringFlag) String() string {
+func (sf *StringFlag) String() string {
 	return sf.value
 }
 
-var port stringFlag
+var port StringFlag
 
 func init() {
 	flag.Var(&port, "port", "the port")
