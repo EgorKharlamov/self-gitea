@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// Check for arguments count and print help
 func CheckArgsCount(args []string) {
 	if len(args) != 2 {
 		fmt.Println("\n\t################\n\t# gitea custom #\n\t################")

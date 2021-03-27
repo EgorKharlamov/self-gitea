@@ -2,7 +2,7 @@ package main
 
 import "flag"
 
-//find flag
+// Find flag
 func SetFlag(str []string) ArgumentsType {
 	res := ArgumentsType{command: str[0], path: str[1]}
 	if !port.set {
@@ -13,7 +13,7 @@ func SetFlag(str []string) ArgumentsType {
 	return res
 }
 
-//  with flag magic
+// With flag magic
 type StringFlag struct {
 	set   bool
 	value string

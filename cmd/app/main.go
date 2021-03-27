@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -14,6 +15,7 @@ func main() {
 	}
 }
 
+// Main runner
 func run() error {
 	flag.Parse()
 	arguments := flag.Args()
@@ -27,12 +29,14 @@ func run() error {
 	return nil
 }
 
+// New path builder
 func BuildNewPath(path string, port string) string {
 	slicedPath := strings.Split(path, ":")
 	res := fmt.Sprintf("ssh://%s:%s/%s", slicedPath[0], port, slicedPath[1])
 	return res
 }
 
+// Command runner
 func RunCommand(args ArgumentsType) {
 	git := "git"
 
@@ -41,5 +45,6 @@ func RunCommand(args ArgumentsType) {
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr
-	cmd.Run()
+	err := cmd.Run()
+	log.Printf("Command finished with error: %v", err)
 }
