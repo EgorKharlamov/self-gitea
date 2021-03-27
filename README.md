@@ -1,2 +1,1 @@
-# test-go
-
+# Self-hosted git helper
